@@ -1,36 +1,48 @@
-require(['engine'], function(engine){
-
-    var counter = 0;
-    var timer = {
-        draw: function(){},
-        update: function(delta){
-            counter += delta;
-            console.log(counter/1000);
-        }
-    };
-
-    var speed = 0.11;
-    var x = 0;
-    var y = 50;
-    var width = 200;
-    var height = 100;
-    function draw(context){
-        context.beginPath();
-        context.rect(x, y, width, height);
-        context.fillStyle = 'yellow';
-        context.fill();
-        context.lineWidth = 7;
-        context.strokeStyle = 'black';
-        context.stroke();
+require(['Engine', 'GameComponent', 'Vector2', 'Sprite'], function (Engine, GameComponent, Vector2, Sprite) {
+    function Box() {
+        GameComponent.call(this);
+        this.width = 100;
+        this.height = 50;
+        this.velocity = new Vector2();
     }
 
-    function update(delta){
-        x += delta * speed;
+    Box.prototype = new GameComponent();
+
+    Box.prototype.draw = function (context2D) {
+        GameComponent.prototype.draw.call(this, context2D);
+        context2D.beginPath();
+        context2D.rect(0, 0, this.width, this.height);
+        context2D.fillStyle = 'yellow';
+        context2D.fill();
+        context2D.lineWidth = 7;
+        context2D.strokeStyle = 'black';
+        context2D.stroke();
     }
 
-    var box = {draw: draw, update: update};
+    Box.prototype.update = function (delta) {
+        GameComponent.prototype.update.call(this, delta);
+        this.position = this.position.sum(this.velocity.scale(delta * 100));
+        this.rotation += this.velocity.x * delta;
+    }
 
-    engine.add(timer);
-    engine.add(box);
+    var engine = new Engine();
+    var box1 = new Box();
+    var box2 = new Box();
+    var box3 = new Box();
+    var sprite = new Sprite('http://www.html5canvastutorials.com/demos/assets/darth-vader.jpg', new Vector2(200, 200));
+
+    box1.position = new Vector2(235, 100);
+    box2.position = new Vector2(235, 100);
+    box3.position = new Vector2(235, 100);
+
+    sprite.position = new Vector2(-50, -50);
+    box1.velocity = new Vector2(1,1);
+    box2.velocity = new Vector2(-1,-1);
+    box3.velocity = new Vector2(0,-1);
+
+    box2.add(sprite);
+    engine.add(box1);
+    engine.add(box2);
+    engine.add(box3);
     engine.start();
 });
