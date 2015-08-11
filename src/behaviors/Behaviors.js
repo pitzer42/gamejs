@@ -1,4 +1,4 @@
-define(['engine', 'Vector'], function(engine, Vector){
+define(['engine', 'math/Vector'], function(engine, Vector){
 
     function verticalMovement(speed){
         var direction = 0;
@@ -59,6 +59,8 @@ define(['engine', 'Vector'], function(engine, Vector){
     }
 
     return {
+        verticalMovement: verticalMovement,
+        horizontalMovement: horizontalMovement,
         fourWayMovement: fourWayMovement
     };
 });

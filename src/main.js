@@ -1,39 +1,63 @@
-require(['engine', 'GameObject', 'Behaviors', 'Vector', 'Sprite', 'AnimatedSprite'], function (engine, GameObject, Behaviors, Vector, Sprite, AnimatedSprite) {
-    var spriteSheetURL= "http://answers.unity3d.com/storage/temp/5358-1123_01_01.jpg";
-    var character = new GameObject();
-    var charSprite = new AnimatedSprite(spriteSheetURL, 125, 125, 500, 8, 1);
-    character.addChild(charSprite);
+require(['engine', 'core/GameObject', 'behaviors/Behaviors', 'math/Vector', 'behaviors/Sprite', 'behaviors/AnimatedSprite', 'behaviors/FourWayMovement'],
+    function (engine, GameObject, Behaviors, Vector, Sprite, AnimatedSprite, FourWayMovement) {
 
-    var box = new GameObject();
-    box.position = new Vector(200, 200);
-    box.addChild({
-        draw:function(context2D){
-            context2D.beginPath();
-            context2D.rect(-50, -50, 100, 100);
-            context2D.fillStyle = 'yellow';
-            context2D.fill();
-            context2D.lineWidth = 7;
-            context2D.strokeStyle = 'black';
-            context2D.stroke();
-        },
-        update: function(){
-        }
+        var box1 = new GameObject();
+        box1.addBehavior({
+            draw: function (context2D) {
+                context2D.beginPath();
+                context2D.rect(-50, -50, 100, 100);
+                context2D.fillStyle = 'yellow';
+                context2D.fill();
+                context2D.lineWidth = 7;
+                context2D.strokeStyle = 'black';
+                context2D.stroke();
+            }
+        });
+        box1.addBehavior(new FourWayMovement(100));
+
+        var box2 = new GameObject();
+        box2.addBehavior({
+            speed: 10,
+            draw: function (context2D) {
+                context2D.beginPath();
+                context2D.rect(-50, -50, 100, 100);
+                context2D.fillStyle = 'yellow';
+                context2D.fill();
+                context2D.lineWidth = 7;
+                context2D.strokeStyle = 'black';
+                context2D.stroke();
+            },
+            update: function (delta) {
+                this.gameObject.position.y += delta * this.speed;
+                this.gameObject.rotation += delta * this.speed;
+            }
+        });
+
+        var box3 = new GameObject();
+        box3.addBehavior({
+            speed: 10,
+            draw: function (context2D) {
+                context2D.beginPath();
+                context2D.rect(-50, -50, 100, 100);
+                context2D.fillStyle = 'blue';
+                context2D.fill();
+                context2D.lineWidth = 7;
+                context2D.strokeStyle = 'black';
+                context2D.stroke();
+            }
+        });
+
+        box1.addChild(box2);
+
+
+        var spriteSheetURL = "http://answers.unity3d.com/storage/temp/5358-1123_01_01.jpg";
+        var anim = new GameObject();
+        var animSprite = new AnimatedSprite(spriteSheetURL, 125, 125, 500, 8, 0.8);
+        anim.addBehavior(animSprite);
+        anim.position = new Vector(300, 300);
+
+        engine.add(box1);
+        engine.add(box3);
+        engine.add(anim);
+        engine.start();
     });
-    box.addBehavior(function(delta){
-        this.rotation += delta * 3.6;
-    });
-
-    engine.events.on(engine.events.SPACE_DOWN, function(){
-       box.visible = !box.visible;
-    });
-
-    var player = new GameObject();
-    var spriteURL = 'http://www.html5canvastutorials.com/demos/assets/darth-vader.jpg';
-    player.addChild(new Sprite(spriteURL, 100, 100));
-    player.addBehavior(Behaviors.fourWayMovement(100));
-
-    engine.add(character);
-    engine.add(box);
-    engine.add(player);
-    engine.start();
-});
