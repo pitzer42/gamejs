@@ -1,9 +1,8 @@
-define(['core/GameObject', 'core/EventBus', 'input/KeyboardEvents'], function (GameObject, EventBus, KeyboardEvents) {
+define(['config', 'core/GameObject', 'core/EventBus', 'input/KeyboardInput'], function (config, GameObject, EventBus, KeyboardEvents) {
     var events = new EventBus();
-    var REFRESH_RATE = 1000 / 60;
     var root = new GameObject();
     var lastUpdate = null;
-    var context2D = document.getElementById('game-canvas').getContext('2d');
+    var context2D = config.CONTEXT_2D;
 
     KeyboardEvents.connectTo(events);
 
@@ -12,8 +11,9 @@ define(['core/GameObject', 'core/EventBus', 'input/KeyboardEvents'], function (G
     }
 
     function start() {
+        root.start();
         setInterval(update, 0);
-        setInterval(draw, REFRESH_RATE);
+        setInterval(draw, config.REFRESH_RATE);
     };
 
     function draw() {

@@ -6,8 +6,8 @@ define(['core/Composite', 'math/Vector'], function (Composite, Vector) {
         this.visible = true;
         this.active = true;
 
-        var children = new Composite('draw', 'update');
-        var behaviors = new Composite('update', 'draw');
+        var children = new Composite('update', 'draw', 'update');
+        var behaviors = new Composite('update', 'draw', 'update');
 
         this.addChild = function (gameObject) {
             gameObject.parent = this;
@@ -15,7 +15,7 @@ define(['core/Composite', 'math/Vector'], function (Composite, Vector) {
         };
 
         this.removeChild = function (gameObject) {
-            if(children.remove(gameObject))
+            if (children.remove(gameObject))
                 gameObject.parent = null;
         };
 
@@ -25,19 +25,24 @@ define(['core/Composite', 'math/Vector'], function (Composite, Vector) {
         };
 
         this.removeBehavior = function (behavior) {
-            if(behaviors.remove(behavior))
+            if (behaviors.remove(behavior))
                 behavior.gameObject = null;
         };
 
+        this.start = function () {
+            behaviors.start();
+            children.start();
+        }
+
         this.update = function (delta) {
-            if(!this.active)
+            if (!this.active)
                 return;
             behaviors.update(delta);
             children.update(delta);
         };
 
         this.draw = function (context2D) {
-            if(!this.visible)
+            if (!this.visible)
                 return;
             context2D.save();
             context2D.translate(this.position.x, this.position.y);

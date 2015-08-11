@@ -1,5 +1,5 @@
 define(function () {
-    var KeyboardEvents = {
+    var KeyboardInput = {
         SPACE_DOWN: 'SPACE_DOWN',
         LEFT_ARROW_DOWN: 'LEFT_ARROW_DOWN',
         RIGHT_ARROW_DOWN: 'RIGHT_ARROW_DOWN',
@@ -19,7 +19,7 @@ define(function () {
         UP_ARROW_UP: 'UP_ARROW_UP'
     };
 
-    KeyboardEvents.connectTo = function (eventBus) {
+    KeyboardInput.connectTo = function (eventBus) {
 
         window.addEventListener('keydown', onKeyDown, true);
         window.addEventListener('keypress', onKeyPress, true);
@@ -40,31 +40,31 @@ define(function () {
         function onKeyDown(event) {
             switch (event.key) {
                 case keyStrings.SPACE:
-                    eventBus.emit(KeyboardEvents.SPACE_DOWN);
+                    eventBus.emit(KeyboardInput.SPACE_DOWN);
                     break;
                 case keyStrings.LEFT:
-                    eventBus.emit(KeyboardEvents.LEFT_ARROW_DOWN);
+                    eventBus.emit(KeyboardInput.LEFT_ARROW_DOWN);
                     break;
                 case keyStrings.ARROW_LEFT:
-                    eventBus.emit(KeyboardEvents.LEFT_ARROW_DOWN);
+                    eventBus.emit(KeyboardInput.LEFT_ARROW_DOWN);
                     break;
                 case keyStrings.RIGHT:
-                    eventBus.emit(KeyboardEvents.RIGHT_ARROW_DOWN);
+                    eventBus.emit(KeyboardInput.RIGHT_ARROW_DOWN);
                     break;
                 case keyStrings.ARROW_RIGHT:
-                    eventBus.emit(KeyboardEvents.RIGHT_ARROW_DOWN);
+                    eventBus.emit(KeyboardInput.RIGHT_ARROW_DOWN);
                     break;
                 case keyStrings.DOWN:
-                    eventBus.emit(KeyboardEvents.DOWN_ARROW_DOWN);
+                    eventBus.emit(KeyboardInput.DOWN_ARROW_DOWN);
                     break;
                 case keyStrings.ARROW_DOWN:
-                    eventBus.emit(KeyboardEvents.DOWN_ARROW_DOWN);
+                    eventBus.emit(KeyboardInput.DOWN_ARROW_DOWN);
                     break;
                 case keyStrings.UP:
-                    eventBus.emit(KeyboardEvents.UP_ARROW_DOWN);
+                    eventBus.emit(KeyboardInput.UP_ARROW_DOWN);
                     break;
                 case keyStrings.ARROW_UP:
-                    eventBus.emit(KeyboardEvents.UP_ARROW_DOWN);
+                    eventBus.emit(KeyboardInput.UP_ARROW_DOWN);
                     break;
             }
         }
@@ -72,31 +72,31 @@ define(function () {
         function onKeyPress(event) {
             switch (event.key) {
                 case keyStrings.SPACE:
-                    eventBus.emit(KeyboardEvents.SPACE_PRESS);
+                    eventBus.emit(KeyboardInput.SPACE_PRESS);
                     break;
                 case keyStrings.LEFT:
-                    eventBus.emit(KeyboardEvents.LEFT_ARROW_PRESS);
+                    eventBus.emit(KeyboardInput.LEFT_ARROW_PRESS);
                     break;
                 case keyStrings.ARROW_LEFT:
-                    eventBus.emit(KeyboardEvents.LEFT_ARROW_PRESS);
+                    eventBus.emit(KeyboardInput.LEFT_ARROW_PRESS);
                     break;
                 case keyStrings.RIGHT:
-                    eventBus.emit(KeyboardEvents.RIGHT_ARROW_PRESS);
+                    eventBus.emit(KeyboardInput.RIGHT_ARROW_PRESS);
                     break;
                 case keyStrings.ARROW_RIGHT:
-                    eventBus.emit(KeyboardEvents.RIGHT_ARROW_PRESS);
+                    eventBus.emit(KeyboardInput.RIGHT_ARROW_PRESS);
                     break;
                 case keyStrings.DOWN:
-                    eventBus.emit(KeyboardEvents.DOWN_ARROW_PRESS);
+                    eventBus.emit(KeyboardInput.DOWN_ARROW_PRESS);
                     break;
                 case keyStrings.ARROW_DOWN:
-                    eventBus.emit(KeyboardEvents.DOWN_ARROW_PRESS);
+                    eventBus.emit(KeyboardInput.DOWN_ARROW_PRESS);
                     break;
                 case keyStrings.UP:
-                    eventBus.emit(KeyboardEvents.UP_ARROW_PRESS);
+                    eventBus.emit(KeyboardInput.UP_ARROW_PRESS);
                     break;
                 case keyStrings.ARROW_UP:
-                    eventBus.emit(KeyboardEvents.UP_ARROW_PRESS);
+                    eventBus.emit(KeyboardInput.UP_ARROW_PRESS);
                     break;
             }
         }
@@ -104,36 +104,36 @@ define(function () {
         function onKeyUp(event) {
             switch (event.key) {
                 case keyStrings.SPACE:
-                    eventBus.emit(KeyboardEvents.SPACE_UP);
+                    eventBus.emit(KeyboardInput.SPACE_UP);
                     break;
                 case keyStrings.LEFT:
-                    eventBus.emit(KeyboardEvents.LEFT_ARROW_UP);
+                    eventBus.emit(KeyboardInput.LEFT_ARROW_UP);
                     break;
                 case keyStrings.ARROW_LEFT:
-                    eventBus.emit(KeyboardEvents.LEFT_ARROW_UP);
+                    eventBus.emit(KeyboardInput.LEFT_ARROW_UP);
                     break;
                 case keyStrings.RIGHT:
-                    eventBus.emit(KeyboardEvents.RIGHT_ARROW_UP);
+                    eventBus.emit(KeyboardInput.RIGHT_ARROW_UP);
                     break;
                 case keyStrings.ARROW_RIGHT:
-                    eventBus.emit(KeyboardEvents.RIGHT_ARROW_UP);
+                    eventBus.emit(KeyboardInput.RIGHT_ARROW_UP);
                     break;
                 case keyStrings.DOWN:
-                    eventBus.emit(KeyboardEvents.DOWN_ARROW_UP);
+                    eventBus.emit(KeyboardInput.DOWN_ARROW_UP);
                     break;
                 case keyStrings.ARROW_DOWN:
-                    eventBus.emit(KeyboardEvents.DOWN_ARROW_UP);
+                    eventBus.emit(KeyboardInput.DOWN_ARROW_UP);
                     break;
                 case keyStrings.UP:
-                    eventBus.emit(KeyboardEvents.UP_ARROW_UP);
+                    eventBus.emit(KeyboardInput.UP_ARROW_UP);
                     break;
                 case keyStrings.ARROW_UP:
-                    eventBus.emit(KeyboardEvents.UP_ARROW_UP);
+                    eventBus.emit(KeyboardInput.UP_ARROW_UP);
                     break;
             }
         }
     };
 
-    return KeyboardEvents;
+    return KeyboardInput;
 });
 

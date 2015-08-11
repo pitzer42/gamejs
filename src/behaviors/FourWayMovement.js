@@ -1,6 +1,6 @@
-define(['engine', 'math/Vector', 'input/KeyboardEvents'], function(engine, Vector, KeyboardEvents){
+define(['engine', 'math/Vector', 'input/KeyboardInput'], function (engine, Vector, KeyboardEvents) {
 
-    function FourWayMovement(speed){
+    function FourWayMovement(speed) {
         var direction = new Vector();
 
         engine.events.on(KeyboardEvents.LEFT_ARROW_PRESS, function () {
@@ -35,7 +35,7 @@ define(['engine', 'math/Vector', 'input/KeyboardEvents'], function(engine, Vecto
             direction.y = 0;
         });
 
-        this.update = function(delta){
+        this.update = function (delta) {
             var position = this.gameObject.position;
             position.translate(position.sum(direction.scale(speed * delta)));
         };
