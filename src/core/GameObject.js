@@ -1,4 +1,4 @@
-define(['core/Composite', 'math/Vector'], function (Composite, Vector) {
+define(['core/Composite', 'math/Vector', 'behaviors/Collider'], function (Composite, Vector, Collider) {
     function GameObject() {
         this.position = new Vector();
         this.rotation = 0;
@@ -6,33 +6,48 @@ define(['core/Composite', 'math/Vector'], function (Composite, Vector) {
         this.visible = true;
         this.active = true;
 
-        var children = new Composite('update', 'draw', 'update');
-        var behaviors = new Composite('update', 'draw', 'update');
+        var children = new Composite('start', 'draw', 'update');
+        var behaviors = new Composite('start', 'draw', 'update', 'onCollision');
+        var colliders = new Composite();
 
-        this.addChild = function (gameObject) {
-            gameObject.parent = this;
-            children.add(gameObject);
+        this.getColliders = function () {
+            return colliders;
         };
 
-        this.removeChild = function (gameObject) {
-            if (children.remove(gameObject))
-                gameObject.parent = null;
+        this.forEachChild = function(visit){
+            for(var i = 0; i < children.length; i++)
+                visit(children[i]);
+        };
+
+        this.addChild = function (child) {
+            child.parent = this;
+            children.add(child);
+        };
+
+        this.removeChild = function (child) {
+            if (children.remove(child))
+                child.parent = null;
         };
 
         this.addBehavior = function (behavior) {
+            if (behavior instanceof Collider)
+                colliders.add(behavior);
             behavior.gameObject = this;
             behaviors.add(behavior);
         };
 
         this.removeBehavior = function (behavior) {
-            if (behaviors.remove(behavior))
-                behavior.gameObject = null;
+            if (behaviors.remove(behavior)) {
+                behavior.parent = null;
+                if (behavior instanceof Collider)
+                    colliders.remove(behavior);
+            }
         };
 
         this.start = function () {
             behaviors.start();
             children.start();
-        }
+        };
 
         this.update = function (delta) {
             if (!this.active)
@@ -50,6 +65,12 @@ define(['core/Composite', 'math/Vector'], function (Composite, Vector) {
             behaviors.draw(context2D);
             children.draw(context2D);
             context2D.restore();
+        };
+
+        this.onCollision = function (collider) {
+            if (!this.active)
+                return;
+            behaviors.onCollision(collider);
         };
     }
 

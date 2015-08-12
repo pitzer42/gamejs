@@ -1,2 +1,3 @@
 AnimatedSprite --|> Sprite ?
 Independent tree for colliders
+improve alot the collision system

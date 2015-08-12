@@ -1,4 +1,4 @@
-require(['engine', 'core/GameObject', 'math/Vector', 'behaviors/Sprite', 'behaviors/AnimatedSprite', 'behaviors/FourWayMovement'], function (engine, GameObject, Vector, Sprite, AnimatedSprite, FourWayMovement) {
+require(['engine', 'core/GameObject', 'math/Vector', 'behaviors/Sprite', 'behaviors/AnimatedSprite', 'behaviors/FourWayMovement', 'behaviors/RectangleCollider'], function (engine, GameObject, Vector, Sprite, AnimatedSprite, FourWayMovement, RectangleCollider) {
 
     var box1 = new GameObject();
     box1.addBehavior({
@@ -54,6 +54,42 @@ require(['engine', 'core/GameObject', 'math/Vector', 'behaviors/Sprite', 'behavi
     var animSprite = new AnimatedSprite(spriteSheetURL, 125, 125, 500, 8, 0.8);
     anim.addBehavior(animSprite);
     anim.position = new Vector(300, 300);
+
+    var col1 = new GameObject();
+    col1.addBehavior({
+        draw: function (context2D) {
+            context2D.beginPath();
+            context2D.rect(0, 0, 100, 100);
+            context2D.fillStyle = 'red';
+            context2D.fill();
+            context2D.strokeStyle = 'black';
+            context2D.stroke();
+        }
+    });
+    col1.position = new Vector(400, 400);
+    col1.addBehavior(new RectangleCollider(100, 100));
+
+    var col2 = new GameObject();
+    col2.addBehavior({
+        color: 'red',
+        draw: function (context2D) {
+            context2D.beginPath();
+            context2D.rect(0, 0, 100, 100);
+            context2D.fillStyle = this.color;
+            context2D.fill();
+            context2D.strokeStyle = 'black';
+            context2D.stroke();
+        },
+        onCollision: function(collider){
+            this.color = 'green';
+        }
+    });
+    col2.position = new Vector(200, 400);
+    col2.addBehavior(new RectangleCollider(100, 100));
+    col2.addBehavior(new FourWayMovement(100));
+
+    engine.add(col1);
+    engine.add(col2);
 
     engine.add(box1);
     engine.add(box3);

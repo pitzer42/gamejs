@@ -1,8 +1,10 @@
-define(['config', 'core/GameObject', 'core/EventBus', 'input/KeyboardInput'], function (config, GameObject, EventBus, KeyboardEvents) {
+define(['config', 'core/GameObject', 'core/EventBus', 'input/KeyboardInput', 'behaviors/CollisionDetector'], function (config, GameObject, EventBus, KeyboardEvents, CollisionDetector) {
+    var context2D = config.CONTEXT_2D;
     var events = new EventBus();
     var root = new GameObject();
     var lastUpdate = null;
-    var context2D = config.CONTEXT_2D;
+
+    root.addBehavior(new CollisionDetector());
 
     KeyboardEvents.connectTo(events);
 
