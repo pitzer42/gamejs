@@ -21,6 +21,7 @@ define(['config', 'core/GameObject', 'core/EventBus', 'input/KeyboardInput', 'be
     function draw() {
         context2D.setTransform(1, 0, 0, 1, 0, 0);
         context2D.clearRect(0, 0, context2D.canvas.width, context2D.canvas.height);
+        context2D.translate(0, context2D.canvas.height);
         root.draw(context2D);
     }
 
@@ -34,7 +35,7 @@ define(['config', 'core/GameObject', 'core/EventBus', 'input/KeyboardInput', 'be
     return {
         events: events,
         start: start,
-        add: root.addChild,
-        remove: root.remove
+        add: root.addChild.bind(root),
+        remove: root.removeChild.bind(root)
     };
 });

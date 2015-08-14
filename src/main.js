@@ -1,4 +1,28 @@
-require(['engine', 'core/GameObject', 'math/Vector', 'behaviors/Sprite', 'behaviors/AnimatedSprite', 'behaviors/FourWayMovement', 'behaviors/RectangleCollider'], function (engine, GameObject, Vector, Sprite, AnimatedSprite, FourWayMovement, RectangleCollider) {
+require(['collisionCheck'], function() {
+/*
+require(['engine', 'core/GameObject', 'math/Vector', 'behaviors/Sprite', 'behaviors/AnimatedSprite', 'behaviors/EightWayMovement', 'behaviors/FourWayMovement', 'behaviors/RectangleCollider'], function (engine, GameObject, Vector, Sprite, AnimatedSprite, EightWayMovement, FourWayMovement, RectangleCollider) {
+    var box1 = new GameObject();
+    box1.addBehavior({
+        draw: function (context2D) {
+            context2D.beginPath();
+            context2D.rect(-5, -5, 10, 10);
+            context2D.fillStyle = 'yellow';
+            context2D.fill();
+            context2D.strokeStyle = 'black';
+            context2D.stroke();
+            console.log(this.gameObject.position.toString());
+        },
+        update: function(delta){
+            var position = this.gameObject.position;
+            position.translate(position.rotate(delta, new Vector(100, 100)));
+        }
+    });
+
+    box1.position = new Vector(50, 50);
+
+    engine.add(box1);
+    engine.start();
+
 
     var box1 = new GameObject();
     box1.addBehavior({
@@ -12,7 +36,7 @@ require(['engine', 'core/GameObject', 'math/Vector', 'behaviors/Sprite', 'behavi
             context2D.stroke();
         }
     });
-    box1.addBehavior(new FourWayMovement(100));
+    box1.addBehavior(new EightWayMovement(100));
 
     var box2 = new GameObject();
     box2.addBehavior({
@@ -87,6 +111,7 @@ require(['engine', 'core/GameObject', 'math/Vector', 'behaviors/Sprite', 'behavi
     col2.position = new Vector(200, 400);
     col2.addBehavior(new RectangleCollider(100, 100));
     col2.addBehavior(new FourWayMovement(100));
+    col2.rotation = 45;
 
     engine.add(col1);
     engine.add(col2);
@@ -95,4 +120,5 @@ require(['engine', 'core/GameObject', 'math/Vector', 'behaviors/Sprite', 'behavi
     engine.add(box3);
     engine.add(anim);
     engine.start();
+    */
 });

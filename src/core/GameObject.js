@@ -1,5 +1,6 @@
 define(['core/Composite', 'math/Vector', 'behaviors/Collider'], function (Composite, Vector, Collider) {
     function GameObject() {
+        this.scale = new Vector(1, 1);
         this.position = new Vector();
         this.rotation = 0;
         this.parent = null;
@@ -14,11 +15,6 @@ define(['core/Composite', 'math/Vector', 'behaviors/Collider'], function (Compos
             return colliders;
         };
 
-        this.forEachChild = function(visit){
-            for(var i = 0; i < children.length; i++)
-                visit(children[i]);
-        };
-
         this.addChild = function (child) {
             child.parent = this;
             children.add(child);
@@ -27,6 +23,13 @@ define(['core/Composite', 'math/Vector', 'behaviors/Collider'], function (Compos
         this.removeChild = function (child) {
             if (children.remove(child))
                 child.parent = null;
+        };
+
+        this.forEachChild = function(visit){
+            for(var i = 0; i < children.length; i++){
+                children[i].forEachChild(visit);
+                visit(children[i]);
+            }
         };
 
         this.addBehavior = function (behavior) {
@@ -60,8 +63,9 @@ define(['core/Composite', 'math/Vector', 'behaviors/Collider'], function (Compos
             if (!this.visible)
                 return;
             context2D.save();
-            context2D.translate(this.position.x, this.position.y);
+            context2D.translate(this.position.x, -this.position.y);
             context2D.rotate(this.rotation);
+            context2D.scale(this.scale.x, this.scale.y);
             behaviors.draw(context2D);
             children.draw(context2D);
             context2D.restore();
@@ -73,6 +77,18 @@ define(['core/Composite', 'math/Vector', 'behaviors/Collider'], function (Compos
             behaviors.onCollision(collider);
         };
     }
+
+    GameObject.prototype.getGlobalPosition = function(){
+        var nextParent = this.parent;
+        var absolutePosition = this.position;
+        while(nextParent !== null){
+            if(nextParent.position === undefined)
+                console.log(nextParent);
+            absolutePosition = absolutePosition.sum(nextParent.position);
+            nextParent = nextParent.parent;
+        }
+        return absolutePosition;
+    };
 
     return GameObject;
 });

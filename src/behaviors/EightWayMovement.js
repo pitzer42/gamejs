@@ -1,25 +1,22 @@
 define(['engine', 'math/Vector', 'input/KeyboardInput'], function (engine, Vector, KeyboardEvents) {
 
-    function FourWayMovement(speed) {
+    function EightWayMovement(speed) {
+
         var direction = new Vector();
 
         engine.events.on(KeyboardEvents.LEFT_ARROW_PRESS, function () {
             direction.x = -1;
-            direction.y = 0;
         });
 
         engine.events.on(KeyboardEvents.RIGHT_ARROW_PRESS, function () {
             direction.x = 1;
-            direction.y = 0;
         });
 
         engine.events.on(KeyboardEvents.DOWN_ARROW_PRESS, function () {
-            direction.x = 0;
             direction.y = -1;
         });
 
         engine.events.on(KeyboardEvents.UP_ARROW_PRESS, function () {
-            direction.x = 0;
             direction.y = 1;
         });
 
@@ -45,5 +42,5 @@ define(['engine', 'math/Vector', 'input/KeyboardInput'], function (engine, Vecto
         };
     }
 
-    return FourWayMovement;
+    return EightWayMovement;
 });

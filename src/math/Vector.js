@@ -26,6 +26,15 @@ define(function () {
         return new Vector(-this.x, -this.y);
     };
 
+    Vector.prototype.rotate = function (radians, pivot) {
+        pivot = pivot || new Vector();
+        var pivoted = this.subtract(pivot);
+        var result = new Vector();
+        result.x = pivoted.x * Math.cos(radians) - pivoted.y * Math.sin(radians);
+        result.y = pivoted.x * Math.sin(radians) + pivoted.y * Math.cos(radians);
+        return result.sum(pivot);
+    }
+
     Vector.prototype.magnitude = function () {
         return Math.sqrt((this.x * this.x) + (this.y * this.y));
     };

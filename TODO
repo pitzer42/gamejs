@@ -1,3 +1,23 @@
+ZIndex?
+    Nao, usar gameObjects para representar layers e adicionar os elementos de cada layer nesses game objects.
+Scale?
+
+Editor de draw: desenhar no canvas enquanto digita
+
 AnimatedSprite --|> Sprite ?
-Independent tree for colliders
-improve alot the collision system
+Passar instancia de engine no start? tirar singleton de engine
+Aceitar Behavior no construtor de GameObject?
+
+improve a lot the collision system
+    Independent tree for colliders
+    Circle collider
+    Colliders with rotation
+    Polygon Collider
+    Hierarchical Collider (bounding box)
+
+mouse input
+websocket multiplayer
+Physics
+nome
+gui
+    div html sobre o canvas
