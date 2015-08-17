@@ -1,6 +1,5 @@
-define(['math/Rectangle', 'math/Circle', 'math/Vector'], function (Rectangle, Circle, Vector) {
+define(['math/Vector', 'math/Circle', 'math/Rectangle'], function (Vector, Circle, Rectangle) {
     describe('Rectangle', function () {
-
         it('is defined by x and y coordenates, width and height', function () {
             var rect = new Rectangle();
             expect(rect.x).toBeDefined();
@@ -9,13 +8,19 @@ define(['math/Rectangle', 'math/Circle', 'math/Vector'], function (Rectangle, Ci
             expect(rect.height).toBeDefined();
         });
 
+        it('can intersect a point', function () {
+            var rect = new Rectangle(-1, -1, 2, 2);
+            var point = new Vector();
+            expect(rect.intersects(point)).toBeTruthy();
+        });
+
         it('can intersect another rectangle', function () {
             var a = new Rectangle(0, 0, 2, 2);
             var b = new Rectangle(1, 1, 2, 2);
             expect(a.intersects(b)).toBeTruthy();
         });
 
-        it('can intersect a circle', function(){
+        it('can intersect a circle', function () {
             var rect = new Rectangle();
             var circle = new Circle();
             expect(rect.intersects(circle)).toBeTruthy();

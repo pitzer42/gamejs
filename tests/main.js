@@ -23,7 +23,8 @@ require(['jasmine-boot'], function () {
       '../tests/specs/composite-spec',
       '../tests/specs/vector-spec',
       '../tests/specs/circle-spec',
-      '../tests/specs/rectangle-spec',
+      '../tests/specs/segment-spec',
+      //'../tests/specs/rectangle-spec',
       '../tests/specs/gameobject-spec'
   ], function(){
     window.onload();

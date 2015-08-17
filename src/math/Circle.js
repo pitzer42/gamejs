@@ -11,7 +11,7 @@ define(['math/Vector'], function (Vector) {
         if(other instanceof Vector)
             return containsPoint(this, other);
         return false;
-    }
+    };
 
     function intersectsCircle(a, b) {
         var aPosition = new Vector(a.x, a.y);

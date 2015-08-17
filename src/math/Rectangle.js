@@ -1,37 +1,58 @@
 define(['math/Circle', 'math/Vector'], function (Circle, Vector) {
-    function Rectangle(x, y, width, height) {
+    function Rectangle(x, y, width, height, rotation) {
         this.x = x || 0;
         this.y = y || 0;
         this.width = width || 1;
-        this.height = height || 1;
+        this.height = height || width;
+        this.rotation = rotation || 0;
     }
 
-    Rectangle.prototype.right = function () {
-        return this.x + this.width;
+    Rectangle.prototype.bottomLeft = function () {
+        return new Vector(this.x, this.y);
     };
 
-    Rectangle.prototype.top = function () {
-        return this.y + this.height;
+    Rectangle.prototype.bottomRight = function () {
+        var point = new Vector(this.x + this.width, this.y);
+        return point.rotate(this.rotation, this.bottomLeft());
     };
 
-    Rectangle.prototype.intersects = function(other){
+    Rectangle.prototype.topLeft = function () {
+        var point = new Vector(this.x, this.y + this.height);
+        return point.rotate(this.rotation, this.bottomLeft());
+    };
+
+    Rectangle.prototype.topRight = function () {
+        var point = new Vector(this.x + this.width, this.y + this.height);
+        return point.rotate(this.rotation, this.bottomLeft());
+    };
+
+    Rectangle.prototype.intersects = function (other) {
+        if (other instanceof Vector)
+            return containsPoint(this, other);
         if (other instanceof Rectangle)
             return intersectsRectangle(this, other);
-        if(other instanceof Circle)
+        if (other instanceof Circle)
             return intersectsCircle(this, other);
         return false;
     };
 
-    function intersectsRectangle(a, b){
-        return (a.right() > b.x) && (a.x < b.right()) && (a.top() > b.y) && (a.y < b.top());
+    function containsPoint(rect, point) {
+        point = point.rotate(-this.rotation);
+        var right = rect.x + rect.width;
+        var top = rect.y + rect.height;
+        return (rect.x < point.x && point.x < right) && (rect.y < point.y && point.y < top);
     }
 
-    function intersectsCircle(a, b){
-        var bottomLeft = new Vector(a.x, a.y);
-        var bottomRight = new Vector(a.x, a.right());
-        var topLeft = new Vector(a.x, a.top());
-        var topRight = new Vector(a.top(), a.right());
-        return b.intersects(bottomLeft) || b.intersects(bottomRight) || b.intersects(topLeft) || b.intersects(topRight);
+    function intersectsRectangle(a, b) {
+        var OriginalRotation = b.rotation;
+        b.rotation -= a.rotation;
+        var intersects = containsPoint(a, b.bottomLeft()) || containsPoint(a, b.bottomRight()) || containsPoint(a, b.topLeft()) || containsPoint(a, b.topRight());
+        b.rotation = OriginalRotation;
+        return intersects;
+    }
+
+    function intersectsCircle(rect, circle) {
+        return circle.intersects(rect.bottomLeft()) || circle.intersects(rect.bottomRight()) || circle.intersects(rect.topLeft()) || circle.intersects(rect.topRight());
     }
 
     return Rectangle;

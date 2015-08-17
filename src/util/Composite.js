@@ -16,8 +16,9 @@ define(function () {
             return function () {
                 for (var i = 0; i < this.length; i++) {
                     var child = this[i];
-                    if (child[method])
-                        child[method].apply(child, arguments);
+                    var childMethod = child[method];
+                    if (childMethod)
+                        childMethod.apply(child, arguments);
                 }
             };
         }

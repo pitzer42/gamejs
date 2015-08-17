@@ -1,4 +1,4 @@
-require(['pong'], function() {
+require(['segment-test'], function() {
 /*
 require(['engine', 'core/GameObject', 'math/Vector', 'behaviors/Sprite', 'behaviors/AnimatedSprite', 'behaviors/EightWayMovement', 'behaviors/FourWayMovement', 'behaviors/RectangleCollider'], function (engine, GameObject, Vector, Sprite, AnimatedSprite, EightWayMovement, FourWayMovement, RectangleCollider) {
     var box1 = new GameObject();
