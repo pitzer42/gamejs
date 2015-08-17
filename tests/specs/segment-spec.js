@@ -35,32 +35,64 @@ define(['math/Vector', 'math/Segment'], function (Vector, Segment) {
             expect(segment.middlePoint().equals(middle)).toBeTruthy();
         });
 
-        it('can intersect another segment', function () {
-            //+
-            var seg1 = new Segment(-1, 0, 1, 0);
-            var seg2 = new Segment(0, -1, 0, 1);
-            var intersection = seg1.intersects(seg2);
-            var expected = new Vector();
-            expect(intersection.equals(new Vector())).toBeTruthy();
+        describe('intersects', function () {
+            it('crossed segments', function () {
+                var seg1 = new Segment(-1, 0, 1, 0);
+                var seg2 = new Segment(0, -1, 0, 1);
+                var intersection = seg1.intersects(seg2);
+                var expected = new Vector();
+                expect(intersection.equals(expected)).toBeTruthy();
+                intersection = seg2.intersects(seg1);
+                expect(intersection.equals(expected)).toBeTruthy();
+            });
 
-            //x
-            seg1 = new Segment(0, 0, 4, 4);
-            seg2 = new Segment(4, 0, 0, 4);
-            intersection = seg1.intersects(seg2);
-            expected = new Vector(2, 2);
-            expect(intersection.equals(expected)).toBeTruthy();
-        });
+            it('X segments', function () {
+                var seg1 = new Segment(1, 1, 10, 10);
+                var seg2 = new Segment(10, 1, 1, 10);
+                var expected = new Vector(5.5, 5.5);
+                var intersection = seg1.intersects(seg2);
+                expect(intersection.equals(expected)).toBeTruthy();
+                intersection = seg2.intersects(seg1);
+                expect(intersection.equals(expected)).toBeTruthy();
+            });
 
-        it('has null intersection with parallel segment', function () {
-            var seg1 = new Segment(0, 0, 1, 0);
-            var seg2 = new Segment(0, 1, 1, 1);
-            expect(seg1.intersects(seg2)).toBe(null);
-        });
+            it('common extreme points', function () {
+                var seg1 = new Segment(1, 2, 3, 4);
+                var seg2 = new Segment(3, 4, 5, 0);
+                var intersection = seg1.intersects(seg2);
+                var expected = new Vector(3, 4);
+                expect(intersection.equals(expected)).toBeTruthy();
+                intersection = seg2.intersects(seg1);
+                expect(intersection.equals(expected)).toBeTruthy();
+            });
 
-        it('has null intersection with collinear segment', function () {
-            var seg1 = new Segment(0, 0, 1, 1);
-            var seg2 = new Segment(2, 2, 3, 3);
-            expect(seg1.intersects(seg2)).toBe(null);
+            it('null for parallels', function () {
+                var seg1 = new Segment(0, 0, 1, 0);
+                var seg2 = new Segment(0, 1, 1, 1);
+                expect(seg1.intersects(seg2)).toBeNull();
+                expect(seg2.intersects(seg1)).toBeNull();
+            });
+
+            it('null for collinear', function () {
+                var seg1 = new Segment(0, 0, 1, 1);
+                var seg2 = new Segment(2, 2, 3, 3);
+                expect(seg1.intersects(seg2)).toBeNull();
+                expect(seg2.intersects(seg1)).toBeNull();
+            });
+
+            it('null for non-collinear, non-parallel and non-concurrent segment', function () {
+                var seg1 = new Segment(0, 0, 1, 1);
+                var seg2 = new Segment(2, 1, 3, 0);
+                expect(seg1.intersects(seg2)).toBeNull()
+                expect(seg2.intersects(seg1)).toBeNull();
+            });
+
+            it('null for same segment', function () {
+                var seg1 = new Segment(1, 2, 3, 4);
+                var seg2 = new Segment(1, 2, 3, 4);
+                expect(seg1.intersects(seg2)).toBeNull();
+                expect(seg2.intersects(seg1)).toBeNull();
+            });
         });
     });
 });

@@ -94,7 +94,7 @@ define(function () {
     }
 
     /**
-     * Cross product or vectorial product. Assumes 2D Vectors to be on the XY plane.
+     * Cross or vector product. Assumes 2D Vectors to be on the XY plane.
      *
      * @param other
      * @returns {number} Z Coordinate of the cross product.
@@ -115,8 +115,8 @@ define(function () {
 
     Vector.prototype.draw = function (context2D) {
         context2D.beginPath();
-        context2D.arc(this.x, this.y, 5, 0, 2 * Math.PI, false);
-        context.fill();
+        context2D.arc(this.x, this.y, 2, 0, 2 * Math.PI, false);
+        context2D.fill();
         context2D.stroke();
     };
 

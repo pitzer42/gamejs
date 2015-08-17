@@ -8,17 +8,13 @@ define(['engine', 'core/GameObject', 'math/Vector', 'math/Segment'], function (e
     var s2 = new Segment(c, d);
 
     var intersection = s1.intersects(s2);
-    console.log(intersection);
+    intersection.y = -intersection.y;
     var obj = new GameObject();
     obj.addBehavior(s1);
     obj.addBehavior(s2);
     obj.addBehavior({
         draw: function (context2D) {
-            context2D.beginPath();
-            context2D.rect(intersection.x, -intersection.y, 5, 5);
-            context2D.fillStyle = 'green';
-            context2D.fill();
-            context2D.stroke();
+            intersection.draw(context2D);
         }
     });
 

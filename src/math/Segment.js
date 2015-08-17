@@ -21,22 +21,35 @@ define(['math/Vector'], function (Vector) {
     };
 
     Segment.prototype.intersects = function (other) {
+        //Parallels or collinears
         var epsilon = 0.000001;
         var alphaCos = this.direction().dot(other.direction());
         if (1 - Math.abs(alphaCos) < epsilon)
             return null;
-        var t = null;
-        var xDenominator = -this.a.x + this.b.x - other.b.x + other.a.x;
-        if (xDenominator !== 0) {
-            t = (other.a.x - this.a.x) / xDenominator;
-        } else {
-            var yDenominator = -this.a.y + this.b.y - other.b.y + other.a.y;
-            if (yDenominator !== 0)
-                t = (other.a.y - this.a.y) / yDenominator;
-            else
-                t = 0.5;
+
+        //sharing extremes
+        if (this.a.equals(other.a) || this.a.equals(other.b))
+            return new Vector(this.a);
+        if (this.b.equals(other.a) || this.b.equals(other.b))
+            return new Vector(this.b);
+
+        var t = 0;
+
+        var denominator = -this.a.x + this.b.x - other.b.x + other.a.x;
+        if (denominator !== 0) {
+            t = (other.a.x - this.a.x) / denominator;
+            return this.at(t);
         }
-        return this.at(t);
+
+        var denominator = -this.a.y + this.b.y - other.b.y + other.a.y;
+        if (denominator !== 0) {
+            t = (other.a.y - this.a.y) / denominator;
+            var intersection = this.at(t);
+            if (intersection.equals(other.at(t)))
+                return intersection;
+        }
+
+        return null;
     };
 
     Segment.prototype.draw = function (context2D) {
