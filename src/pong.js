@@ -1,4 +1,4 @@
-define(['engine', 'core/GameObject', 'math/Vector', 'behaviors/VerticalMovement', 'behaviors/RectangleCollider'], function (engine, GameObject, Vector, VerticalMovement, RectangleCollider) {
+define(['engine', 'core/GameObject', 'math/Vector', 'behaviors/VerticalMovement', 'behaviors/RectangleCollider', 'input/MouseInput'], function (engine, GameObject, Vector, VerticalMovement, RectangleCollider, MouseInput) {
 
     function RectangleSprite(color) {
         this.draw = function (context2D) {
@@ -59,6 +59,14 @@ define(['engine', 'core/GameObject', 'math/Vector', 'behaviors/VerticalMovement'
         onCollision: function (collider) {
             console.log('ok');
             this.velocity.x = -this.velocity.x;
+        }
+    });
+
+    ball.addBehavior({
+        start: function(){
+            engine.events.on(MouseInput.MOUSE_MOVE, function(position){
+               console.log(position.toString());
+            });
         }
     });
 

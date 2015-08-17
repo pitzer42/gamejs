@@ -8,7 +8,7 @@ define(function () {
         this.x = other.x;
         this.y = other.y;
         return this;
-    }
+    };
 
     Vector.prototype.scale = function (factor) {
         return new Vector(this.x * factor, this.y * factor);
@@ -33,18 +33,18 @@ define(function () {
         result.x = pivoted.x * Math.cos(radians) - pivoted.y * Math.sin(radians);
         result.y = pivoted.x * Math.sin(radians) + pivoted.y * Math.cos(radians);
         return result.sum(pivot);
-    }
+    };
 
     Vector.prototype.magnitude = function () {
         return Math.sqrt((this.x * this.x) + (this.y * this.y));
     };
 
+    Vector.prototype.distance = function(other){
+        return this.subtract(other).magnitude();
+    };
+
     Vector.prototype.toString = function () {
         return '(' + this.x + ', ' + this.y + ')';
-    }
-
-    Vector.distance = function (a, b) {
-        return a.subtract(b).magnitude();
     };
 
     return Vector;

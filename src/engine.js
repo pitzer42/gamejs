@@ -1,4 +1,4 @@
-define(['config', 'core/GameObject', 'core/EventBus', 'input/KeyboardInput', 'behaviors/CollisionDetector'], function (config, GameObject, EventBus, KeyboardEvents, CollisionDetector) {
+define(['config', 'core/GameObject', 'util/EventBus', 'input/KeyboardInput', 'input/MouseInput', 'behaviors/CollisionDetector'], function (config, GameObject, EventBus, KeyboardInput, MouseInput, CollisionDetector) {
     var context2D = config.CONTEXT_2D;
     var events = new EventBus();
     var root = new GameObject();
@@ -6,7 +6,8 @@ define(['config', 'core/GameObject', 'core/EventBus', 'input/KeyboardInput', 'be
 
     root.addBehavior(new CollisionDetector());
 
-    KeyboardEvents.connectTo(events);
+    KeyboardInput.connectTo(events);
+    MouseInput.connectTo(events);
 
     function getMilliseconds() {
         return new Date().getTime();

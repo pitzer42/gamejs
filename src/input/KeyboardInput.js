@@ -20,7 +20,6 @@ define(function () {
     };
 
     KeyboardInput.connectTo = function (eventBus) {
-
         window.addEventListener('keydown', onKeyDown, true);
         window.addEventListener('keypress', onKeyPress, true);
         window.addEventListener('keyup', onKeyUp, true);
