@@ -8,6 +8,56 @@ define(['math/Vector'], function (Vector) {
         this.b = b;
     }
 
+    Segment.prototype.intersects = function (other) {
+        if (other instanceof Vector)
+            return containsPoint(this, other);
+        if (other instanceof Segment)
+            return intersectsSegment(this, other);
+        return false;
+    }
+
+    function containsPoint(segment, point) {
+        var t = (point.x - segment.a.x) / (segment.b.x - segment.a.x);
+        var y = segment.a.y + t * (segment.b.y - segment.a.y);
+        return point.y === y;
+    }
+
+    function intersectsSegment(segment, other) {
+        //Parallels or collinears
+        var epsilon = 0.000001;
+        var alphaCos = segment.direction().dot(other.direction());
+        if (1 - Math.abs(alphaCos) < epsilon)
+            return null;
+
+        //sharing extremes
+        if (segment.a.equals(other.a) || segment.a.equals(other.b))
+            return new Vector(segment.a);
+        if (segment.b.equals(other.a) || segment.b.equals(other.b))
+            return new Vector(segment.b);
+
+        var t = 0;
+
+        var denominator = -segment.a.x + segment.b.x - other.b.x + other.a.x;
+        if (denominator !== 0) {
+            t = (other.a.x - segment.a.x) / denominator;
+            return segment.at(t);
+        }
+
+        var denominator = -segment.a.y + segment.b.y - other.b.y + other.a.y;
+        if (denominator !== 0) {
+            t = (other.a.y - segment.a.y) / denominator;
+            var intersection = segment.at(t);
+            if (intersection.equals(other.at(t)))
+                return intersection;
+        }
+
+        return null;
+    };
+
+    Segment.prototype.length = function () {
+        return this.b.distance(this.a);
+    };
+
     Segment.prototype.direction = function () {
         return this.b.subtract(this.a).normalize();
     };
@@ -20,43 +70,13 @@ define(['math/Vector'], function (Vector) {
         return this.at(0.5);
     };
 
-    Segment.prototype.intersects = function (other) {
-        //Parallels or collinears
-        var epsilon = 0.000001;
-        var alphaCos = this.direction().dot(other.direction());
-        if (1 - Math.abs(alphaCos) < epsilon)
-            return null;
-
-        //sharing extremes
-        if (this.a.equals(other.a) || this.a.equals(other.b))
-            return new Vector(this.a);
-        if (this.b.equals(other.a) || this.b.equals(other.b))
-            return new Vector(this.b);
-
-        var t = 0;
-
-        var denominator = -this.a.x + this.b.x - other.b.x + other.a.x;
-        if (denominator !== 0) {
-            t = (other.a.x - this.a.x) / denominator;
-            return this.at(t);
-        }
-
-        var denominator = -this.a.y + this.b.y - other.b.y + other.a.y;
-        if (denominator !== 0) {
-            t = (other.a.y - this.a.y) / denominator;
-            var intersection = this.at(t);
-            if (intersection.equals(other.at(t)))
-                return intersection;
-        }
-
-        return null;
-    };
-
     Segment.prototype.draw = function (context2D) {
+        context2D.save();
         context2D.beginPath();
-        context2D.moveTo(this.a.x, -this.a.y);
-        context2D.lineTo(this.b.x, -this.b.y);
+        context2D.moveTo(this.a.x, this.a.y);
+        context2D.lineTo(this.b.x, this.b.y);
         context2D.stroke();
+        context2D.restore();
     };
 
     return Segment;

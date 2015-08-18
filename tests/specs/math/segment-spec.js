@@ -26,6 +26,12 @@ define(['math/Vector', 'math/Segment'], function (Vector, Segment) {
             expect(segment.at(1).equals(b)).toBeTruthy();
         });
 
+        it('can check if contains a point', function () {
+            var segment = new Segment(0, 0, 2, 2);
+            var point = new Vector(1,1);
+            expect(segment.intersects(point)).toBeTruthy();
+        });
+
         it('has a middle point', function () {
             var a = new Vector(1, 2);
             var b = new Vector(3, 4);
@@ -33,6 +39,11 @@ define(['math/Vector', 'math/Segment'], function (Vector, Segment) {
             var segment = new Segment(a, b);
             expect(segment.at(0.5).equals(middle)).toBeTruthy();
             expect(segment.middlePoint().equals(middle)).toBeTruthy();
+        });
+
+        it('has a length', function () {
+            var segment = new Segment(0, 0, 1, 1);
+            expect(segment.length()).toBeCloseTo(Math.sqrt(2));
         });
 
         describe('intersects', function () {

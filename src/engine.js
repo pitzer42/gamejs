@@ -34,6 +34,7 @@ define(['config', 'core/GameObject', 'util/EventBus', 'input/KeyboardInput', 'in
     }
 
     return {
+        viewport: config.CONTEXT_2D.canvas.getBoundingClientRect(),
         events: events,
         start: start,
         add: root.addChild.bind(root),

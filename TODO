@@ -14,7 +14,7 @@ EventBus: provides event-based communication between GameObjects. Used by keyboa
 
 ZIndex can be emulated by using GameObjects to represent layers.
 
-
+Intersects != Contains != Collides
 
 Editor de draw: desenhar no canvas enquanto digita
 
