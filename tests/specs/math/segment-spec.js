@@ -30,6 +30,8 @@ define(['math/Vector', 'math/Segment'], function (Vector, Segment) {
             var segment = new Segment(0, 0, 2, 2);
             var point = new Vector(1,1);
             expect(segment.intersects(point)).toBeTruthy();
+            point.setScale(100);
+            expect(segment.intersects(point)).toBeFalsy();
         });
 
         it('has a middle point', function () {

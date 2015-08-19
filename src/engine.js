@@ -4,7 +4,9 @@ define(['config', 'core/GameObject', 'util/EventBus', 'input/KeyboardInput', 'in
     var root = new GameObject();
     var lastUpdate = null;
 
-    root.addBehavior(new CollisionDetector());
+    var collisionDetector = new CollisionDetector();
+    root.addBehavior(collisionDetector);
+    root.collisionDetector = collisionDetector;
 
     KeyboardInput.connectTo(events);
     MouseInput.connectTo(events);
@@ -23,6 +25,7 @@ define(['config', 'core/GameObject', 'util/EventBus', 'input/KeyboardInput', 'in
         context2D.setTransform(1, 0, 0, 1, 0, 0);
         context2D.clearRect(0, 0, context2D.canvas.width, context2D.canvas.height);
         context2D.translate(0, context2D.canvas.height);
+        context2D.scale(1, -1);
         root.draw(context2D);
     }
 

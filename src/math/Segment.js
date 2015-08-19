@@ -4,7 +4,7 @@ define(['math/Vector'], function (Vector) {
             a = new Vector(arguments[0], arguments[1]);
             b = new Vector(arguments[2], arguments[3]);
         }
-        this.a = a;
+        this.position = this.a = a;
         this.b = b;
     }
 
@@ -18,12 +18,14 @@ define(['math/Vector'], function (Vector) {
 
     function containsPoint(segment, point) {
         var t = (point.x - segment.a.x) / (segment.b.x - segment.a.x);
+        if (t < 0 || t > 1)
+            return false;
         var y = segment.a.y + t * (segment.b.y - segment.a.y);
         return point.y === y;
     }
 
     function intersectsSegment(segment, other) {
-        //Parallels or collinears
+        //parallels or collinears
         var epsilon = 0.000001;
         var alphaCos = segment.direction().dot(other.direction());
         if (1 - Math.abs(alphaCos) < epsilon)
@@ -36,14 +38,12 @@ define(['math/Vector'], function (Vector) {
             return new Vector(segment.b);
 
         var t = 0;
-
         var denominator = -segment.a.x + segment.b.x - other.b.x + other.a.x;
         if (denominator !== 0) {
             t = (other.a.x - segment.a.x) / denominator;
             return segment.at(t);
         }
-
-        var denominator = -segment.a.y + segment.b.y - other.b.y + other.a.y;
+        denominator = -segment.a.y + segment.b.y - other.b.y + other.a.y;
         if (denominator !== 0) {
             t = (other.a.y - segment.a.y) / denominator;
             var intersection = segment.at(t);

@@ -1,9 +1,8 @@
 define(['math/Vector', 'math/Segment', 'math/Circle', 'math/Rectangle'], function (Vector, Segment, Circle, Rectangle) {
     describe('Rectangle', function () {
-        it('is defined by x and y coordinates, width and height', function () {
+        it('is defined by a point, width and height', function () {
             var rect = new Rectangle();
-            expect(rect.x).toBeDefined();
-            expect(rect.y).toBeDefined();
+            expect(rect.position).toBeDefined();
             expect(rect.width).toBeDefined();
             expect(rect.height).toBeDefined();
         });

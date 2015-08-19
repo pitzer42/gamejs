@@ -1,1 +1,1 @@
-require(['pong'], function() {});
+require(['playground'], function () {});

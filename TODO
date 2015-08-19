@@ -1,41 +1,37 @@
-GameObject: Object in a bidimensional space, with position, rotation and scale. Can also represent a subspace that
-contains other GameObjects. GameObjects can form a tree structured. The engine start the drawing and update from a root
-GameObject. Draws and Updates are made in pre-order. Objects on leafs are the last to be drewn and updated.
+Questoes de design
+    AnimatedSprite --|> Sprite ?
+    Passar instancia de engine no start? tirar singleton de engine?
+    Aceitar Behavior no construtor de GameObject?
 
-Behavior: Objects that add behaviors to GameObjects
-    start
-    update
-    draw
-    onCollision
-
-Engine: do the game loop, and control the lifecycle of the GameObject tree. Holds an EventBus.
-
-EventBus: provides event-based communication between GameObjects. Used by keyboard and mouse events.
-
-ZIndex can be emulated by using GameObjects to represent layers.
-
-Intersects != Contains != Collides
-
-Editor de draw: desenhar no canvas enquanto digita
-
-AnimatedSprite --|> Sprite ?
-Passar instancia de engine no start? tirar singleton de engine
-Aceitar Behavior no construtor de GameObject?
-
-improve a lot the collision system
-    Independent tree for colliders
-    Circle collider
-    Colliders with rotation
-    Polygon Collider
+TODO
+    TileMap
+    Editor de draw: desenhar no canvas enquanto digita
+    Intersects != Contains != Collides
+    Collision
     Hierarchical Collider (bounding box)
+    websocket multiplayer
+    Physics
+    name
+    gui (div html sobre o canvas)
+    remover colliders do collisionDetector
 
 
-websocket multiplayer
-Physics
-nome
-gui
-    div html sobre o canvas
-independent collisionchecker, shapes instead of colliders(hierarchies?)
+Docs
 
+    GameObject: Object in a bidimensional space, with position, rotation and scale. Can also represent a subspace that
+    contains other GameObjects. GameObjects can form a tree structured. The engine start the drawing and update from a root
+    GameObject. Draws and Updates are made in pre-order. Objects on leafs are the last to be drewn and updated.
 
-mouse input
+    Behavior: Objects that add behaviors to GameObjects
+        start
+        update
+        draw
+        onCollision
+
+    Engine: do the game loop, and control the lifecycle of the GameObject tree. Holds an EventBus.
+
+    EventBus: provides event-based communication between GameObjects. Used by keyboard and mouse events.
+
+Notas
+
+    ZIndex can be emulated by using GameObjects to represent layers.

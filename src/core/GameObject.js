@@ -63,7 +63,7 @@ define(['util/Composite', 'math/Vector', 'behaviors/Collider'], function (Compos
             if (!this.visible)
                 return;
             context2D.save();
-            context2D.translate(Math.floor(this.position.x), -Math.floor(this.position.y));
+            context2D.translate(Math.floor(this.position.x), Math.floor(this.position.y));
             context2D.rotate(this.rotation);
             context2D.scale(this.scale.x, this.scale.y);
             behaviors.draw(context2D);
