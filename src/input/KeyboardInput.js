@@ -19,7 +19,9 @@ define(function () {
         UP_ARROW_UP: 'UP_ARROW_UP'
     };
 
-    KeyboardInput.connectTo = function (eventBus) {
+    KeyboardInput.connectTo = function (engine) {
+        var eventBus = engine.events;
+
         window.addEventListener('keydown', onKeyDown, true);
         window.addEventListener('keypress', onKeyPress, true);
         window.addEventListener('keyup', onKeyUp, true);

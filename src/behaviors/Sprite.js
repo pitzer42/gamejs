@@ -3,8 +3,8 @@ define(function () {
         var image = new Image();
         image.src = imageURL;
 
-        this.draw = function (context2D) {
-            context2D.drawImage(image, this.position.x, this.position.y, width, height);
+        this.draw = function (context) {
+            context.drawImage(image, 0, 0, width, height);
         };
     }
 

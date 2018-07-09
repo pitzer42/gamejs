@@ -1,10 +1,8 @@
 define(['util/Composite', 'behaviors/Collider'], function (Composite, Collider) {
     function CollisionDetector() {
-        var colliders = new Composite();
+        var colliders = [];
 
-        this.registerCollider = colliders.add.bind(colliders);
-
-        this.unregisterCollider = colliders.remove.bind(colliders);
+        this.addCollider = colliders.push.bind(colliders);
 
         this.update = function () {
             for (var i = 0; i + 1 < colliders.length; i++) {

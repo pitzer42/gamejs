@@ -14,15 +14,15 @@ define(function () {
             timer += delta;
             if (timer >= perFrameTime) {
                 timer = 0;
-                if (++frameIndex == frameQuantity)
+                if (++frameIndex === frameQuantity)
                     frameIndex = 0;
                 frameX = (frameIndex % framesPerLine) * width;
                 frameY = Math.floor(frameIndex / framesPerLine) * height;
             }
         };
 
-        this.draw = function (context2D) {
-            context2D.drawImage(spriteSheet, frameX, frameY, width, height, 0, 0, width, height);
+        this.draw = function (context) {
+            context.drawImage(spriteSheet, frameX, frameY, width, height, 0, 0, width, height);
         };
     }
 

@@ -1,22 +1,43 @@
-define(['engine', 'core/GameObject', 'behaviors/Collider', 'math/Rectangle', 'behaviors/EightWayMovement', 'math/Vector', 'math/Circle', 'math/Segment'], function (engine, GameObject, Collider, Rectangle, EightWayMovement, Vector, Circle, Segment) {
-    var wall = new GameObject();
-    var wallShape = new Segment(0,0,100,100);//new Rectangle(0, 0, 50, 150);//new Circle();
-    wall.addBehavior(wallShape);
-    wall.addBehavior(new Collider(wallShape));
-    wall.position = new Vector(300, 200);
-
-    var player = new GameObject();
-    var playerShape = new Circle(0,0,20);//new Rectangle(0, 0, 20, 20);
-    player.addBehavior(playerShape);
-    player.addBehavior(new Collider(playerShape));
-    player.addBehavior(new EightWayMovement(100));
-    player.addBehavior({
-        onCollision: function(){
-            console.log('ok');
+define(['Engine', 'core/GameObject', 'input/KeyboardInput', 'math/Circle', 'behaviors/EightWayMovement', 'behaviors/Collider', 'math/Polygon', 'math/Vector'], function (Engine, GameObject, KeyboardInput, Circle, EightWayMovement, Collider, Polygon, Vector) {
+    var mesh = new GameObject({
+        draw: function (context) {
+            var vector = new Vector();
+            for (var i = 0; i < 13; i++) {
+                for (var j = 0; j < 10; j++) {
+                    vector.translate(i * 50, j * 50);
+                    vector.draw(context);
+                }
+            }
         }
     });
 
-    engine.add(wall);
-    engine.add(player);
+    var obj = new GameObject({
+        draw: function(context){
+            this.transform.position.draw(context);
+            console.log(this.transform.position.toString());
+        }
+    });
+    obj.add(new EightWayMovement(50));
+
+    var circle2 = new Circle(0,0,25);
+    var obj2 = new GameObject(circle2);
+    obj2.add({
+        update: function(delta){
+            this.transform.rotation += delta * 0.36;
+        }
+    });
+
+    var circle3 = new Circle(0,0,15);
+    var obj3 = new GameObject(circle3);
+    obj3.transform.position.translate(100,0);
+
+    obj2.add(obj3);
+    obj2.add(new EightWayMovement(50));
+
+    var engine = new Engine();
+    engine.add(mesh);
+    engine.add(obj2);
+    engine.add(obj);
+
     engine.start();
 });

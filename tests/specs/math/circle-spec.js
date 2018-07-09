@@ -1,11 +1,34 @@
 define(['math/Vector', 'math/Segment', 'math/Circle'], function (Vector, Segment, Circle) {
     describe('Circle', function () {
-
-        it('is defined by a point and radius', function () {
+        it('is defined by a transform and radius', function () {
             var circle = new Circle();
-            expect(circle.position).toBeDefined();
+            expect(circle.transform).toBeDefined();
             expect(circle.radius).toBeDefined();
         });
+
+        it('is at origin and has radius 1 by default ', function(){
+            var circle = new Circle();
+            var origin = new Vector();
+            expect(circle.transform.position.equals(origin)).toBeTruthy();
+            expect(circle.radius).toBe(1);
+        });
+
+        it('can be created from a point a radius', function(){
+            var center = new Vector(1,2);
+            var circle = new Circle(center,3);
+            expect(circle.transform.position.equals(center)).toBeTruthy();
+            expect(circle.radius).toBe(3);
+        });
+
+        it('can be created from x and y coordinates and a radius', function(){
+            var circle = new Circle(1,2,3);
+            var expectPosition = new Vector(1,2);
+            expect(circle.transform.position.equals(expectPosition)).toBeTruthy();
+            expect(circle.radius).toBe(3);
+        });
+
+
+        /*
 
         it('can intersect a point', function () {
             var circle = new Circle();
@@ -27,5 +50,7 @@ define(['math/Vector', 'math/Segment', 'math/Circle'], function (Vector, Segment
             var b = new Circle(1, 1, 2);
             expect(a.intersects(b)).toBeTruthy();
         });
+
+        */
     });
 });

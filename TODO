@@ -1,3 +1,6 @@
+SHAPE
+
+
 Questoes de design
     AnimatedSprite --|> Sprite ?
     Passar instancia de engine no start? tirar singleton de engine?

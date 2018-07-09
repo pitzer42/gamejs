@@ -10,8 +10,13 @@ define(function () {
     }
 
     Vector.prototype.translate = function (other) {
-        this.x = other.x;
-        this.y = other.y;
+        if(arguments.length == 1){
+            this.x = other.x;
+            this.y = other.y;
+        }else{
+            this.x = arguments[0];
+            this.y = arguments[1];
+        }
         return this;
     };
 
@@ -113,15 +118,12 @@ define(function () {
         return '(' + this.x + ', ' + this.y + ')';
     };
 
-    Vector.prototype.draw = function (context2D) {
-        context2D.save();
-        context2D.beginPath();
-        context2D.arc(this.x, this.y, 2, 0, 2 * Math.PI, false);
-        context2D.fill();
-        context2D.stroke();
-        context2D.restore();
+    Vector.prototype.draw = function (context) {
+        context.beginPath();
+        context.arc(this.x, this.y, 3, 0, 2 * Math.PI, false);
+        context.fill();
+        context.stroke();
     };
 
     return Vector;
-})
-;
+});

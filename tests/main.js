@@ -21,11 +21,11 @@ require(['jasmine-boot'], function () {
   require([
       '../tests/specs/eventbus-spec',
       '../tests/specs/composite-spec',
+      '../tests/specs/gameobject-spec',
       '../tests/specs/math/vector-spec',
       '../tests/specs/math/circle-spec',
       '../tests/specs/math/segment-spec',
-      '../tests/specs/math/rectangle-spec',
-      '../tests/specs/gameobject-spec'
+      '../tests/specs/math/rectangle-spec'
   ], function(){
     window.onload();
   })

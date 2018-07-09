@@ -1,55 +1,113 @@
-define(['util/Composite', 'math/Vector', 'behaviors/Collider'], function (Composite, Vector, Collider) {
-    function GameObject() {
-        this.scale = new Vector(1, 1);
-        this.position = new Vector();
-        this.rotation = 0;
+define(['util/Composite', 'math/Vector', 'math/Transform', 'behaviors/Collider', 'behaviors/CollisionDetector'], function (Composite, Vector, Transform, Collider, CollisionDetector) {
+    function GameObject(behavior) {
+        this.transform = new Transform();
         this.parent = null;
         this.visible = true;
         this.active = true;
+        this.collider = null;
+        this.collisionDetector = null;
 
+        var engine = null;
         var children = new Composite('start', 'draw', 'update');
         var behaviors = new Composite('start', 'draw', 'update', 'onCollision');
-        var colliders = new Composite();
 
-        this.getColliders = function () {
-            return colliders;
+        this.add = function (component) {
+            if (component instanceof GameObject)
+                addChild.call(this, component);
+            else if(component instanceof Collider)
+                setCollider.call(this, component);
+            else if(component instanceof CollisionDetector)
+                setCollisionDetector.call(this, component);
+            else
+                addBehavior.call(this, component);
+            if(engine)
+                component.start(engine);
         };
 
-        this.addChild = function (child) {
+        function addChild(child) {
             child.parent = this;
+            child.transform.parent = this.transform;
             children.add(child);
-        };
+        }
 
-        this.removeChild = function (child) {
-            if (children.remove(child))
-                child.parent = null;
-        };
+        function setCollider(collider){
+            this.collider = collider;
+            addBehavior.call(this, collider);
+        }
 
-        this.forEachChild = function(visit){
-            for(var i = 0; i < children.length; i++){
-                children[i].forEachChild(visit);
-                visit(children[i]);
-            }
-        };
+        function setCollisionDetector(detector){
+            this.collisionDetector = detector;
+            addBehavior.call(this, detector);
+        }
 
-        this.addBehavior = function (behavior) {
-            if (behavior instanceof Collider)
-                colliders.add(behavior);
+        function addBehavior(behavior) {
             behavior.gameObject = this;
+            behavior.transform = this.transform;
             behaviors.add(behavior);
+        }
+
+        this.remove = function (component) {
+            if (component instanceof GameObject)
+                removeChild.call(this, component);
+            else if(component instanceof Collider)
+                removeCollider.call(this, component);
+            else if(component instanceof CollisionDetector)
+                removeCollisionDetector.call(this, component);
+            else
+                removeBehavior.call(this, component);
         };
 
-        this.removeBehavior = function (behavior) {
+        function removeChild(child) {
+            if (children.remove(child)) {
+                child.parent = null;
+                child.transform = null;
+            }
+        }
+
+        function removeCollider(collider){
+            if(removeBehavior.call(this, collider))
+                this.collider = null;
+        }
+
+        function removeCollisionDetector(detector){
+            if(removeBehavior.call(this, detector))
+                this.collisionDetector = null;
+        }
+
+        function removeBehavior(behavior) {
             if (behaviors.remove(behavior)) {
-                behavior.parent = null;
-                if (behavior instanceof Collider)
-                    colliders.remove(behavior);
+                behavior.gameObject = null;
+                behavior.transform = null;
+            }
+        }
+
+        this.forEachChild = function (visit) {
+            for (var i = 0; i < children.length; i++) {
+                children[i].forEachChild(visit);
+                if(visit(children[i]))
+                    return;
             }
         };
 
-        this.start = function () {
-            behaviors.start();
-            children.start();
+        this.forEachBehavior = function(visit){
+            for(var i = 0; i < behavior.length; i++)
+                if(visit(behavior[i]))
+                    return;
+        };
+
+        this.forEachParent = function(visit){
+            var next = this.parent;
+            while(next){
+                if(visit(next))
+                    return;
+                next = next.parent;
+            }
+        }
+
+        this.start = function (engine) {
+            engine = engine;
+            behaviors.start(engine);
+            children.start(engine);
         };
 
         this.update = function (delta) {
@@ -59,16 +117,19 @@ define(['util/Composite', 'math/Vector', 'behaviors/Collider'], function (Compos
             children.update(delta);
         };
 
-        this.draw = function (context2D) {
+        this.draw = function (context) {
             if (!this.visible)
                 return;
-            context2D.save();
-            context2D.translate(Math.floor(this.position.x), Math.floor(this.position.y));
-            context2D.rotate(this.rotation);
-            context2D.scale(this.scale.x, this.scale.y);
-            behaviors.draw(context2D);
-            children.draw(context2D);
-            context2D.restore();
+
+            context.save();
+            this.transform.applyTo(context);
+            behaviors.draw(context);
+            context.restore();
+
+            context.save();
+            this.transform.applyTo(context);
+            children.draw(context);
+            context.restore();
         };
 
         this.onCollision = function (collider) {
@@ -76,19 +137,10 @@ define(['util/Composite', 'math/Vector', 'behaviors/Collider'], function (Compos
                 return;
             behaviors.onCollision(collider);
         };
-    }
 
-    GameObject.prototype.getGlobalPosition = function(){
-        var nextParent = this.parent;
-        var absolutePosition = this.position;
-        while(nextParent !== null){
-            if(nextParent.position === undefined)
-                console.log(nextParent);
-            absolutePosition = absolutePosition.sum(nextParent.position);
-            nextParent = nextParent.parent;
-        }
-        return absolutePosition;
-    };
+        if(behavior)
+            this.add(behavior);
+    }
 
     return GameObject;
 });

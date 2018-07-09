@@ -1,9 +1,11 @@
-define(['math/Vector', 'math/Segment', 'math/Circle'], function (Vector, Segment, Circle) {
+define(['math/Vector', 'math/Transform', 'math/Segment', 'math/Circle'], function (Vector, Transform, Segment, Circle) {
     function Rectangle(x, y, width, height, rotation) {
-        this.position = new Vector(x, y);
+        this.transform = new Transform();
+        this.transform.position.x = x;
+        this.transform.position.y = y;
+        this.transform.rotation = rotation || 0;
         this.width = width || 1;
         this.height = height || 1;
-        this.rotation = rotation || 0;
     }
 
     Rectangle.prototype.getEdges = function () {
@@ -52,8 +54,8 @@ define(['math/Vector', 'math/Segment', 'math/Circle'], function (Vector, Segment
         if (contains)
             return true;
         var edges = rect.getEdges();
-        for(var i = 0; i < edges.length; i++)
-            if(segment.intersects(edges[i]))
+        for (var i = 0; i < edges.length; i++)
+            if (segment.intersects(edges[i]))
                 return true;
         return false;
     }
@@ -63,8 +65,8 @@ define(['math/Vector', 'math/Segment', 'math/Circle'], function (Vector, Segment
         if (contains)
             return true;
         var edges = rect.getEdges();
-        for(var i = 0; i < edges.length; i++)
-            if(circle.intersects(edges[i]))
+        for (var i = 0; i < edges.length; i++)
+            if (circle.intersects(edges[i]))
                 return true;
         return false;
     }

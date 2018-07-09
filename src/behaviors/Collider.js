@@ -1,32 +1,48 @@
 define(function () {
     function Collider(shape) {
         this.shape = shape;
+
+        this.draw = this.shape.draw.bind(this.shape);
     }
 
     Collider.prototype.start = function () {
-        var next = this.gameObject;
-        while (next != null) {
-            if (next.collisionDetector) {
-                next.collisionDetector.registerCollider(this);
-                next = null;
-            } else
-                next = next.parent;
-        }
+        this.shape.transform.parent = this.transform;
+        var collider = this;
+        this.gameObject.forEachParent(function (parent) {
+            if (parent.collisionDetector) {
+                parent.collisionDetector.addCollider(collider);
+                return true;
+            }
+        });
     };
 
     Collider.prototype.collides = function (other) {
-        var thisPosition = this.gameObject.getGlobalPosition();
-        var otherPosition = other.gameObject.getGlobalPosition();
+        var thisTransform = this.shape.transform;
+        var otherTransform = other.shape.transform;
+        this.shape.transform = this.shape.transform.getGlobal();
+        other.shape.transform = other.shape.transform.getGlobal();
 
-        this.shape.position.setSum(thisPosition);
-        other.shape.position.setSum(otherPosition);
+        var collision = false;
+        var vertices = other.shape.getVertices();
+        for (var i = 0; i < vertices.length; i++) {
+            if (this.shape.contains(vertices[i])) {
+                collision = true;
+                break;
+            }
+        }
+        if (!collision) {
+            vertices = this.shape.getVertices();
+            for (var i = 0; i < vertices.length; i++) {
+                if (other.shape.contains(vertices[i])) {
+                    collision = true;
+                    break;
+                }
+            }
+        }
 
-        var result = this.shape.intersects(other.shape) || other.shape.intersects(this.shape);
-
-        this.shape.position.setSubtract(thisPosition);
-        other.shape.position.setSubtract(otherPosition);
-
-        return result;
+        this.shape.transform = thisTransform;
+        other.shape.transform = otherTransform;
+        return collision;
     };
 
     return Collider;

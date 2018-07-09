@@ -143,9 +143,13 @@ define(['math/Vector'], function (Vector) {
         });
 
         it('can calculate coordinate on the z axis of the cross product', function () {
-            var a = new Vector(1, 2);
-            var b = new Vector(3, 4);
-            expect(a.cross(b)).toBe(-2);
+            var a = new Vector(1, 1);
+            var b = new Vector(1, 2);
+            var c = new Vector(1, -2);
+            var d = new Vector(2, 2);
+            expect(a.cross(b)).toBe(1);
+            expect(a.cross(c)).toBe(-3);
+            expect(a.cross(d)).toBe(0);
         });
     });
 });
